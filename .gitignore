@@ -1,0 +1,39 @@
+*.txt
+*/input/*
+*/data/*
+data/*
+input/*
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+.vscode/settings.json
+.vim/
+
+# pyenv
+.python-version
+# dotenv
+.env
+
+# virtualenv
+venv/
+ENV/
+/include/
+/src/
+/bin/
+/local/
+.venv/
