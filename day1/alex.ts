@@ -22,7 +22,6 @@ const solution = () => {
 
     console.log(firstSolution);
     console.log(secondSolution);
-
 }
 
 solution();
