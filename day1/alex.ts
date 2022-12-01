@@ -13,6 +13,7 @@ const solution = () => {
 
     const sumOfSnacks = bagArray.reduce((arr, el) => {
         arr.push(el.reduce((a, b) => a + b, 0))
+        
         return arr;
     }, []);
 
