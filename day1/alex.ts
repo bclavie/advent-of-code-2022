@@ -3,9 +3,9 @@ import * as fs from 'fs';
 const input: string  = fs.readFileSync('./day1/input.txt').toString();
 
 const solution = () => {
-    const bags: any = input.split('\n\n');
+    const bags: string[] = input.split('\n\n');
 
-    let bagArray: any = bags.reduce((arr, el,) => {
+    const bagArray: number[][] = bags.reduce((arr, el,) => {
         arr.push(el.split('\n').map(x => parseInt(x)))
         
         return arr;
