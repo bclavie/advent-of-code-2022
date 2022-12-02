@@ -2,7 +2,10 @@ import * as fs from 'fs';
 
 const input: string  = fs.readFileSync('./day2/input.txt').toString();
 
-const combinations = {
+type Combination = Record<string, number>;
+type Plays = Record<string, string>;
+
+const combinations: Combination = {
     'A X': 4,
     'A Y': 8,
     'A Z': 3,
@@ -14,7 +17,7 @@ const combinations = {
     'C Z': 6,
   };
 
-const plays = {
+const plays: Plays = {
     'A X': 'Z',
     'A Y': 'X',
     'A Z': 'Y',
