@@ -20,3 +20,8 @@ def solve_part_2(input_file: str = "input.txt") -> int:
 
 print(solve_part_1())
 print(solve_part_2())
+
+
+# Monstrosity one liner below
+# For Alex and Yuri
+print("Part 1: {}\nPart 2: {}".format(*[int(sum(x) / 2) for x in zip(*map(lambda x: ("  BXCYAZAXBYCZCXAYBZ".index(x[0] + x[2]),"  BXCXAXAYBYCYCZAZBZ".index(x[0] + x[2]),), open("input.txt"),))]))
