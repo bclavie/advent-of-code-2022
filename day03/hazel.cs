@@ -6,7 +6,7 @@ List<string> part2 = new List<string>();
 List<char> part2sol = new List<char>();
 List<char> items = new List<char>();
 List<double> count = new List<double>();
-List<double>count1 = new List<double>();
+List<double> count1 = new List<double>();
 char[] alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
 
 
@@ -17,7 +17,9 @@ while (line != null)
 {
     line = newreader.ReadLine();
     if (string.IsNullOrEmpty(line))
-    { break; }
+    { 
+        break; 
+    }
     else
     {
         var first = line.Substring(0, (int)line.Length / 2);
