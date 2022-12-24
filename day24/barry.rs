@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::{HashMap, HashSet, VecDeque};
 
 use aoc2022::time_run2;
 
@@ -143,26 +143,22 @@ impl Grid {
         }
     }
 
-    fn manhattan_distance_to(&self, a: (i64, i64), b: (i64, i64)) -> i64 {
-        (a.0 - b.0).abs() + (a.1 - b.1).abs()
-    }
-
     fn is_in_bounds(&self, a: (i64, i64)) -> bool {
         (a == self.entrance || a == self.exit)
             || (a.0 >= self.entrance.0 && a.0 <= self.exit.0 && a.1 > 0 && a.1 < self.exit.1)
     }
 
-    // BFS with priority queue/A* minimising minutes spent and Manhattan distance at each step.
+    // BFS
     fn traverse(&self, start: (i64, i64), end: (i64, i64), start_mins: i64) -> i64 {
-        // minute, manhattan distance, position
-        let mut priority_queue = Vec::<(i64, i64, (i64, i64))>::new();
-        priority_queue.push((start_mins, self.manhattan_distance_to(start, end), start));
+        // minute, position
+        let mut queue = VecDeque::<(i64, (i64, i64))>::new();
+        queue.push_back((start_mins, start));
 
         // If we've visited a combination of node, minute before, then we can just skip it.
         let mut visited = HashSet::<(i64, (i64, i64))>::new();
 
-        while !priority_queue.is_empty() {
-            let (minutes, _dist, position) = self.get_next_position(&mut priority_queue);
+        while !queue.is_empty() {
+            let (minutes, position) = queue.pop_front().unwrap();
 
             if visited.get(&(minutes, position)).is_some() {
                 continue;
@@ -184,9 +180,8 @@ impl Grid {
             if next_blizzard_positions.get(&position).is_none()
                 && visited.get(&(minutes + 1, position)).is_none()
             {
-                priority_queue.push((
+                queue.push_back((
                     minutes + 1,
-                    self.manhattan_distance_to(position, end),
                     position,
                 ))
             }
@@ -198,7 +193,7 @@ impl Grid {
                     && next_blizzard_positions.get(&up).is_none()
                     && visited.get(&(minutes + 1, up)).is_none()
                 {
-                    priority_queue.push((minutes + 1, self.manhattan_distance_to(up, end), up))
+                    queue.push_back((minutes + 1, up))
                 }
             }
 
@@ -209,7 +204,7 @@ impl Grid {
                     && visited.get(&(minutes + 1, down)).is_none()
                     && next_blizzard_positions.get(&down).is_none()
                 {
-                    priority_queue.push((minutes + 1, self.manhattan_distance_to(down, end), down))
+                    queue.push_back((minutes + 1, down))
                 }
             }
 
@@ -220,7 +215,7 @@ impl Grid {
                     && next_blizzard_positions.get(&left).is_none()
                     && visited.get(&(minutes + 1, left)).is_none()
                 {
-                    priority_queue.push((minutes + 1, self.manhattan_distance_to(left, end), left))
+                    queue.push_back((minutes + 1, left))
                 }
             }
 
@@ -231,9 +226,8 @@ impl Grid {
                     && next_blizzard_positions.get(&right).is_none()
                     && visited.get(&(minutes + 1, right)).is_none()
                 {
-                    priority_queue.push((
+                    queue.push_back((
                         minutes + 1,
-                        self.manhattan_distance_to(right, end),
                         right,
                     ))
                 }
@@ -241,25 +235,6 @@ impl Grid {
         }
 
         panic!("path not found")
-    }
-
-    fn get_next_position(&self, queue: &mut Vec<(i64, i64, (i64, i64))>) -> (i64, i64, (i64, i64)) {
-        // Get minimum by minutes then distance
-        let min_minute = queue
-            .iter()
-            .enumerate()
-            .min_by(|a, b| a.1 .0.cmp(&b.1 .0))
-            .unwrap();
-
-        let queue_elems_with_min_minute = queue
-            .iter()
-            .enumerate()
-            .filter(|a| a.1 .0 == min_minute.1 .0);
-
-        let elem_with_min_dist = queue_elems_with_min_minute
-            .min_by(|a, b| a.1 .1.cmp(&b.1 .1))
-            .unwrap();
-        queue.swap_remove(elem_with_min_dist.0)
     }
 
     #[allow(unused)]
